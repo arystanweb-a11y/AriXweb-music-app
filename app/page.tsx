@@ -33,8 +33,7 @@ export default function Home() {
   return (
     <main className="app-shell">
       <header className="topbar">
-        <div className="brand-mark" aria-hidden="true"><span /></div>
-        <span className="brand-name">музыка</span>
+        <h1 className="brand-title">AriXweb</h1>
         {userName && <span className="user-greeting">{userName}</span>}
       </header>
 

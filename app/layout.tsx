@@ -1,4 +1,6 @@
 import type { Metadata, Viewport } from "next";
+import "@fontsource-variable/handjet";
+import "@fontsource-variable/montserrat";
 import "./globals.css";
 import { MusicProvider } from "@/components/music-context";
 

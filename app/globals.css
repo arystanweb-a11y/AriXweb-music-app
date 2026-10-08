@@ -36,15 +36,12 @@ body::after {
 button, input { font: inherit; }
 button { color: inherit; }
 .app-shell { min-height: 100dvh; width: 100%; max-width: 600px; margin: 0 auto; padding: var(--safe-top) 22px calc(138px + var(--safe-bottom)); position: relative; }
-.topbar { height: 62px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--line); }
-.brand-mark { width: 24px; height: 24px; border-radius: 8px; background: var(--accent); display: grid; place-items: center; }
-.brand-mark span { width: 8px; height: 11px; border: 2px solid var(--text); border-radius: 5px 5px 3px 3px; position: relative; }
-.brand-mark span::after { content: ""; position: absolute; width: 4px; height: 5px; border: 1.6px solid var(--text); border-left: 0; border-radius: 0 4px 4px 0; top: 1px; right: -5px; }
-.brand-name { font-size: 14px; font-weight: 700; letter-spacing: -.4px; }
+.topbar { height: 74px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--line); }
+.brand-title { margin: 0; color: var(--text); font-family: "Handjet Variable", sans-serif; font-size: 50px; font-weight: 600; line-height: .9; letter-spacing: .5px; }
 .user-greeting { margin-left: auto; color: var(--muted); font-size: 12px; }
 .content { padding-top: 39px; }
 .heading-row { display: flex; align-items: end; justify-content: space-between; margin-bottom: 23px; }
-.eyebrow { margin: 0 0 8px; color: var(--muted); font-size: 9px; font-weight: 700; letter-spacing: 1.45px; }
+.eyebrow { margin: 0 0 8px; color: var(--muted); font-family: "Montserrat Variable", sans-serif; font-size: 9px; font-weight: 700; letter-spacing: 1.45px; }
 h1 { margin: 0; font-size: clamp(30px, 8vw, 38px); line-height: 1.02; letter-spacing: -1.6px; font-weight: 700; }
 .library-count { color: #b9bcb7; font-size: 13px; font-weight: 600; padding-bottom: 3px; }
 .search-form { height: 52px; display: flex; align-items: center; gap: 11px; padding: 0 6px 0 15px; background: var(--surface); border: 1px solid var(--line); border-radius: 13px; box-shadow: 0 8px 28px rgba(0, 0, 0, .12); }
