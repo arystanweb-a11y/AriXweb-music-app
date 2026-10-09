@@ -1,5 +1,13 @@
 import type { TelegramUser } from "./types";
 
+export async function getTelegramInitData(): Promise<string | null> {
+  if (typeof window === "undefined") return null;
+  try {
+    const { default: telegram } = await import("@twa-dev/sdk");
+    return telegram.initData || null;
+  } catch { return null; }
+}
+
 /** Initializes Telegram when available and safely falls back to a regular browser. */
 export async function initTelegram(): Promise<TelegramUser | null> {
   if (typeof window === "undefined") return null;

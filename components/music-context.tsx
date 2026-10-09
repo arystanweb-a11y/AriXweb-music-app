@@ -2,7 +2,7 @@
 
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
-import { downloadTrack, searchTracks } from "@/lib/music-api";
+import { downloadTrack, searchTracks, uploadUserTrack } from "@/lib/music-api";
 import type { Track } from "@/lib/types";
 
 type MusicContextValue = {
@@ -15,8 +15,10 @@ type MusicContextValue = {
   duration: number;
   isSearching: boolean;
   downloadingId: string | null;
+  uploadingTrack: boolean;
   search: (query: string) => Promise<void>;
   download: (track: Track) => Promise<void>;
+  uploadTrack: (file: File) => Promise<void>;
   playTrack: (track: Track) => void;
   togglePlayback: () => void;
   nextTrack: () => void;
@@ -37,6 +39,7 @@ export function MusicProvider({ children }: { children: ReactNode }) {
   const [duration, setDuration] = useState(0);
   const [isSearching, setIsSearching] = useState(false);
   const [downloadingId, setDownloadingId] = useState<string | null>(null);
+  const [uploadingTrack, setUploadingTrack] = useState(false);
   const [storageReady, setStorageReady] = useState(false);
 
   useEffect(() => {
@@ -78,7 +81,7 @@ export function MusicProvider({ children }: { children: ReactNode }) {
   const download = useCallback(async (track: Track) => {
     setDownloadingId(track.id);
     try {
-      const saved = await downloadTrack(track.id);
+      const saved = track.uploadedBy ? { ...track, isDownloaded: true } : await downloadTrack(track.id);
       setDownloadedTracks((current) => current.some((item) => item.id === saved.id) ? current : [...current, saved]);
       setSearchResults((current) => current.map((item) => item.id === saved.id ? { ...item, isDownloaded: true } : item));
       // Trigger a browser download when allowed; the saved library record is independent of file storage.
@@ -104,6 +107,16 @@ export function MusicProvider({ children }: { children: ReactNode }) {
       }
     } catch (error) { console.error("Track download failed", error); }
     finally { setDownloadingId(null); }
+  }, []);
+
+  const uploadTrack = useCallback(async (file: File) => {
+    setUploadingTrack(true);
+    try {
+      const uploaded = await uploadUserTrack(file);
+      setDownloadedTracks((current) => current.some((item) => item.id === uploaded.id) ? current : [...current, uploaded]);
+      setSearchResults((current) => [uploaded, ...current.filter((item) => item.id !== uploaded.id)]);
+      setQueue((current) => [uploaded, ...current.filter((item) => item.id !== uploaded.id)]);
+    } finally { setUploadingTrack(false); }
   }, []);
 
   const playTrack = useCallback((track: Track) => {
@@ -138,7 +151,7 @@ export function MusicProvider({ children }: { children: ReactNode }) {
 
   const value: MusicContextValue = {
     searchResults, downloadedTracks, currentTrack, queue, isPlaying, progress, duration,
-    isSearching, downloadingId, search, download, playTrack, togglePlayback, nextTrack, seek,
+    isSearching, downloadingId, uploadingTrack, search, download, uploadTrack, playTrack, togglePlayback, nextTrack, seek,
   };
 
   return (

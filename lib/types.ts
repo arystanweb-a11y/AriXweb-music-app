@@ -7,6 +7,7 @@ export type Track = {
   audioUrl: string;
   downloadUrl: string;
   isDownloaded: boolean;
+  uploadedBy?: string;
 };
 
 export type TelegramUser = {
