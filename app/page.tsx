@@ -20,6 +20,12 @@ export default function Home() {
   const { t } = useAppearance();
 
   useEffect(() => {
+    void search("");
+    // Load the shared catalog once when the Mini App opens.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
     void initTelegram().then((user) => {
       if (user?.first_name) setUserName(user.first_name);
     });
